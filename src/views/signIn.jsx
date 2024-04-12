@@ -14,13 +14,12 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function SignIn() {
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
   const [data, setData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const [errorAlert, setErrorAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,7 +39,6 @@ function SignIn() {
     let newErrors = {};
     //check if all the keys have values. if empty show error
     for (const key in data) {
-      //console.log(key, data);
       if (data[key] === "") {
         console.log(data[key]);
         newErrors[key] = `${key} is required`;
@@ -60,7 +58,6 @@ function SignIn() {
     // if have any error show an alert
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setErrorAlert(true);
       return;
     }
     console.log(data);
@@ -73,7 +70,6 @@ function SignIn() {
             email: "Incorrect email or password",
             password: "Incorrect email or password",
           });
-          setErrorAlert(true);
         }
       })
       .catch((error) => {
@@ -82,7 +78,6 @@ function SignIn() {
           email: "An error occurred",
           password: "An error occurred",
         });
-        setErrorAlert(true);
       });
   };
   return (

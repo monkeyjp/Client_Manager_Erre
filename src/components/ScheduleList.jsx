@@ -5,17 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { EditableField } from "./EditableField";
 import Grid from "@mui/material/Grid";
-import {
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { TextField, Button, FormControl } from "@mui/material";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -34,6 +25,7 @@ export const ScheduleList = ({ formData, onChange }) => {
     { id: "actions", label: "Actions", minWidth: 100 },
   ];
 
+  // Handle click event to add a new event to the schedule
   const onAddDateClick = () => {
     const newDates = [...formData.schedule];
     newDates.push({
@@ -44,6 +36,7 @@ export const ScheduleList = ({ formData, onChange }) => {
     setDateTitle("");
   };
 
+  // Handle click event to delete an event from the schedule
   const onDeleteDateClick = (index) => {
     const newDates = formData.schedule.filter((date, i) => i !== index);
     onChange(newDates);

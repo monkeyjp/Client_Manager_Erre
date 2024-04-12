@@ -38,15 +38,18 @@ export const Clients = () => {
     { id: "actions", label: "Actions", minWidth: 100 },
   ];
 
+  // Handle page change
   const onPageChange = (event, newPage) => {
     setPage(newPage);
   };
 
+  // Handle rows per page change
   const onRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
   };
 
+  // Handle filter change
   const onFilterChange = (event) => {
     const selectedFilter = event.target.value;
     setFilter(selectedFilter);
@@ -69,6 +72,7 @@ export const Clients = () => {
     navigate(`/editClient/${id}`);
   };
 
+  // Filter data based on search term and selected filter option
   const filteredData = data.filter(search).filter((client) => {
     if (!selectedFilterOption) {
       return true;

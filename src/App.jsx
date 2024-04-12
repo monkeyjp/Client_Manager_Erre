@@ -17,7 +17,6 @@ function App() {
           <Route path="/addClient" element={<AddClient />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/clients" element={<Clients />} />
-          <Route path="/editClient" element={<EditClient />} />
           <Route path="/editClient/:id" element={<EditClient />} />
         </Routes>
       </BrowserRouter>

@@ -9,6 +9,8 @@ import { NotesList } from "./NotesList";
 import { JsonModal } from "./JsonModal";
 import { z } from "zod";
 
+// "The ClientForm component, when called with a client prop, displays all the client information and allows for editing or exporting it as JSON.
+//If no client is passed, it displays the fields for filling in and handles adding a new client."
 export const ClientForm = ({ client }) => {
   const { actions } = useContext(Context);
   const [formData, setFormData] = useState({
@@ -27,6 +29,7 @@ export const ClientForm = ({ client }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    //validate if client was passed as props to update formData
     if (client) {
       setFormData({
         id: client.id,
@@ -44,10 +47,12 @@ export const ClientForm = ({ client }) => {
   }, [client]);
 
   const onSubmit = (event) => {
+    //function to send our formData to create or edit our client
     event.preventDefault();
 
     try {
       const clientSchema = z.object({
+        //validate specific inputs
         firstName: z.string().min(1, { message: "First Name is required" }),
         lastName: z.string().min(1, { message: "Last Name is required" }),
         company: z.string().min(1, { message: "Company is required" }),
@@ -82,11 +87,13 @@ export const ClientForm = ({ client }) => {
   };
 
   const onFormFieldChange = (e) => {
+    //modify our formData when user change an especific value
     const { name, value } = e.target || e;
     setFormData({ ...formData, [name]: value });
   };
 
   const onClickExportJson = () => {
+    //set the modal display to show it
     setIsModalOpen(true);
   };
 

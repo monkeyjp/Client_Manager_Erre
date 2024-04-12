@@ -16,6 +16,7 @@ export const JsonModal = ({ isModalOpen, formData, setIsModalOpen }) => {
     <Dialog open={isModalOpen} onClose={onClickClose}>
       <DialogTitle>Client Information (JSON)</DialogTitle>
       <DialogContent>
+        {/* use pre to mantain the format of the JSON */}
         <pre>
           <DialogContentText>
             {JSON.stringify(formData, null, 2)}

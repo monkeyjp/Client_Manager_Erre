@@ -13,7 +13,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   const onLogoutClick = () => {
-    actions.logOut();
+    actions.logOut(); //call out function logOut in flux to delete the token, close session and then navigate to signIn
     navigate("/");
   };
 
@@ -21,15 +21,6 @@ export const Navbar = () => {
     <Box sx={{ flexGrow: 1, marginBottom: "64px" }}>
       <AppBar position="fixed">
         <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Érre Technology - Challenge ‘24
           </Typography>

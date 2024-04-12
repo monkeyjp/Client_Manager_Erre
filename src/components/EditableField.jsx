@@ -5,18 +5,22 @@ export const EditableField = ({ value, rowIndex, columnId, type }) => {
   const [editingValue, setEditingValue] = useState(value);
   const [editing, setEditing] = useState(false);
 
+  // Function to handle click event to initiate editing
   const handleClick = () => {
     setEditing(true);
   };
 
+  // Function to handle blur event to exit editing mode
   const handleBlur = () => {
     setEditing(false);
   };
 
+  // Function to handle key press event, primarily to handle "Enter" key press to save changes
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       setEditing(false);
 
+      // Update the data based on the type of field (note or schedule)
       const newData =
         type === "note" ? [...formData.notes] : [...formData.schedule];
       newData[rowIndex] = { ...newData[rowIndex], [columnId]: editingValue };
@@ -28,6 +32,7 @@ export const EditableField = ({ value, rowIndex, columnId, type }) => {
     }
   };
 
+  // Function to handle change event when editing the value
   const handleChange = (e) => {
     setEditingValue(e.target.value);
   };

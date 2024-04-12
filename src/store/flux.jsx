@@ -1,5 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
+    // Define the initial state of the store
     store: {
       message: null,
       demo: [],
@@ -186,34 +187,34 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
       ],
     },
+    // Define actions to interact with the store
     actions: {
-      // Use getActions to call a function within a fuction
-      signUp: (data, navigate) => {
+      // Function to sign up a new user
+      signUp: (data, navigate, setErrors) => {
+        // Perform API request to create a new user
         console.log(data);
-        return new Promise((resolve, reject) => {
-          fetch("https://app.grupoerre.pt:1934/auth/create-user", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          redirect: "follow",
+        };
+
+        fetch("https://app.grupoerre.pt:1934/auth/create-user", requestOptions)
+          .then((response) => {
+            if (response.status === 409) {
+              setErrors({ email: "User Already Exist" });
+            }
+            return response.json();
           })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              if (data.message == "OK") {
-                navigate("/");
-                resolve(true);
-              } else {
-                resolve(false);
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              reject(error);
-            });
-        });
+          .then((result) => {
+            navigate("/");
+          })
+          .catch((error) => console.error(error));
       },
+      // Function to log in a user
       login: (data, navigate) => {
         console.log(data);
         return new Promise((resolve, reject) => {
@@ -234,7 +235,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 navigate("/clients");
                 resolve(true);
               } else {
-                //console.log("Password or mail incorrect");
                 resolve(false);
               }
             })
@@ -244,15 +244,18 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         });
       },
+      // Function to log out a user
       logOut: () => {
         localStorage.removeItem("token");
         setStore({ auth: false });
       },
+      // Function to update the token in the store
       updateToken: () => {
         if (localStorage.getItem("token")) {
           setStore({ token: localStorage.getItem("token") });
         }
       },
+      // Function to create a new client
       createClient: (client) => {
         const clients = getStore().clients;
         const maxId = Math.max(...clients.map((client) => client.id));
@@ -260,8 +263,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         const newClient = { ...client, id: newId };
         const newList = clients.concat(newClient);
         setStore({ clients: newList });
-        //console.log(newList);
       },
+      // Function to edit an existing client
       editClient: (formData) => {
         const { clients } = getStore();
         const updatedClients = clients.map((client) => {
@@ -273,6 +276,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
         setStore({ clients: updatedClients });
       },
+      // Function to get a client by ID
       getClient: (id) => {
         const clients = getStore().clients;
         const client = clients.find((client) => client.id === parseInt(id));
@@ -282,6 +286,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         return client;
       },
+      // Function to delete a client by ID
       deleteClientById: (id) => {
         const clients = getStore().clients;
         const updatedClients = clients.filter(

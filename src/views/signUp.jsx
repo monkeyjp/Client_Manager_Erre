@@ -23,7 +23,10 @@ export const SignUp = () => {
     lastName: "",
     email: "",
     password: "",
+    securePasswordFlag: false,
   });
+
+  // Function to handle changes in input fields
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -32,6 +35,7 @@ export const SignUp = () => {
 
   const defaultTheme = createTheme();
 
+  // Schema for sign up data validation
   const SignUpSchema = z.object({
     firstName: z.string().min(1, "First Name is required"),
     lastName: z.string().min(1, "Last Name is required"),
@@ -50,16 +54,16 @@ export const SignUp = () => {
       }),
   });
 
+  // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
 
     try {
-      SignUpSchema.parse(data); // Cambiado de formData a data
-      console.log("Formulario válido:", data);
-      // Continuar con el proceso de registro
+      // Validate form data
+      SignUpSchema.parse(data);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        // Si hay errores de validación, establecer los errores en el estado
+        // If validation fails, set errors state
         const fieldErrors = {};
         error.errors.forEach((err) => {
           fieldErrors[err.path[0]] = err.message;
@@ -67,8 +71,8 @@ export const SignUp = () => {
         setErrors(fieldErrors);
       }
     }
-    console.log(data);
-    actions.signUp(data, navigate);
+    // Call signUp action with form data and navigation function
+    actions.signUp(data, navigate, setErrors);
   };
 
   return (

@@ -5,8 +5,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { EditableField } from "./EditableField";
 import Grid from "@mui/material/Grid";
 import {
   TextField,
@@ -24,19 +22,13 @@ export const NotesList = ({ formData, onChange }) => {
   const [noteTitle, setNoteTitle] = useState("");
   const [selectedNoteType, setSelectedNoteType] = useState("needs");
 
-  const onNoteChange = (e, index, fieldName) => {
-    const { value } = e.target;
-    const newNotes = [...formData.notes];
-    newNotes[index][fieldName] = value;
-    onChange(newNotes);
-  };
-
   const notesColumns = [
     { id: "category", label: "Category", minWidth: 170 },
     { id: "title", label: "Title", minWidth: 170 },
     { id: "actions", label: "Actions", minWidth: 100 },
   ];
 
+  // Handle click event to add a new note
   const onAddNoteClick = () => {
     const newNotes = [...formData.notes];
     newNotes.push({
@@ -47,6 +39,7 @@ export const NotesList = ({ formData, onChange }) => {
     setNoteTitle("");
   };
 
+  // Handle click event to delete a note
   const onDeleteNoteClick = (index) => {
     const newNotes = formData.notes.filter((note, i) => i !== index);
     onChange(newNotes);
