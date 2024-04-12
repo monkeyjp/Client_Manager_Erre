@@ -64,7 +64,26 @@ function SignIn() {
       return;
     }
     console.log(data);
-    actions.login(data, navigate);
+    actions
+      .login(data, navigate)
+      .then((success) => {
+        if (!success) {
+          // Handle login failure
+          setErrors({
+            email: "Incorrect email or password",
+            password: "Incorrect email or password",
+          });
+          setErrorAlert(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+        setErrors({
+          email: "An error occurred",
+          password: "An error occurred",
+        });
+        setErrorAlert(true);
+      });
   };
   return (
     <ThemeProvider theme={defaultTheme}>

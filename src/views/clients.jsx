@@ -150,7 +150,7 @@ export const Clients = () => {
             </TextField>
           </Grid>
         </Grid>
-        <TableContainer sx={{ maxHeight: "calc(100vh - 350px)" }}>
+        <TableContainer sx={{ maxHeight: "calc(100vh - 400px)" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -191,7 +191,9 @@ export const Clients = () => {
                                 </IconButton>
                               </>
                             ) : (
-                              value
+                              <div onClick={() => handleEdit(row.id)}>
+                                {value}
+                              </div>
                             )}
                           </TableCell>
                         );

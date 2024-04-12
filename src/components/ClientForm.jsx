@@ -1,20 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { ScheduleList } from "./ScheduleList";
 import { NotesList } from "./NotesList";
 import { JsonModal } from "./JsonModal";
+import { z } from "zod";
 
 export const ClientForm = ({ client }) => {
   const { actions } = useContext(Context);
@@ -52,12 +45,39 @@ export const ClientForm = ({ client }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (!client) {
-      actions.createClient(formData);
+
+    try {
+      const clientSchema = z.object({
+        firstName: z.string().min(1, { message: "First Name is required" }),
+        lastName: z.string().min(1, { message: "Last Name is required" }),
+        company: z.string().min(1, { message: "Company is required" }),
+        email: z.string().email("Invalid email format"),
+        status: z.string().min(1, { message: "Status is required" }),
+        address: z.string().min(1, { message: "Address is required" }),
+        phone: z.string().min(1, { message: "Phone is required" }),
+      });
+
+      // Validate form data
+      clientSchema.parse(formData);
+
+      // If validation passes, create or edit the client
+      if (!client) {
+        actions.createClient(formData);
+      } else {
+        actions.editClient(formData);
+      }
+
+      // Redirect to the clients page
       navigate("/clients");
-    } else {
-      actions.editClient(formData);
-      navigate("/clients");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // If there are validation errors, set the errors state
+        const fieldErrors = {};
+        error.errors.forEach((err) => {
+          fieldErrors[err.path[0]] = err.message;
+        });
+        setErrors(fieldErrors);
+      }
     }
   };
 
@@ -153,7 +173,7 @@ export const ClientForm = ({ client }) => {
               value={formData.status}
               onChange={onFormFieldChange}
               error={errors.status ? true : false}
-              helperText={errors.emstatusail}
+              helperText={errors.status}
             />
           </Grid>
           <Grid item xs={12} sm={6}>

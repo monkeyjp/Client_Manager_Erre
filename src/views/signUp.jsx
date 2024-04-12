@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Alert from "@mui/material/Alert";
+import { z } from "zod";
 
 export const SignUp = () => {
   const { actions } = useContext(Context);
@@ -32,32 +32,40 @@ export const SignUp = () => {
 
   const defaultTheme = createTheme();
 
+  const SignUpSchema = z.object({
+    firstName: z.string().min(1, "First Name is required"),
+    lastName: z.string().min(1, "Last Name is required"),
+    email: z.string().email("Invalid email format"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Password must contain at least one special character"
+      )
+      .refine((value) => value.trim() !== "", {
+        message: "Password is required",
+      }),
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let newErrors = {};
-    //check if all the keys have values. if empty show error
-    for (const key in data) {
-      if (data[key] === "") {
-        console.log(data[key]);
-        newErrors[key] = `${key} is required`;
+    try {
+      SignUpSchema.parse(data); // Cambiado de formData a data
+      console.log("Formulario válido:", data);
+      // Continuar con el proceso de registro
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Si hay errores de validación, establecer los errores en el estado
+        const fieldErrors = {};
+        error.errors.forEach((err) => {
+          fieldErrors[err.path[0]] = err.message;
+        });
+        setErrors(fieldErrors);
       }
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-      newErrors.email = "Invalid email format";
-    } else {
-      // clear the value for email when user solve the error
-      delete newErrors.email;
-    }
-    //console.log(newErrors);
-    setErrors(newErrors);
-
-    // if have any error show an alert
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
     }
     console.log(data);
     actions.signUp(data, navigate);
