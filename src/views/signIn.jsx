@@ -40,7 +40,6 @@ function SignIn() {
     //check if all the keys have values. if empty show error
     for (const key in data) {
       if (data[key] === "") {
-        console.log(data[key]);
         newErrors[key] = `${key} is required`;
       }
     }
@@ -60,7 +59,6 @@ function SignIn() {
       setErrors(newErrors);
       return;
     }
-    console.log(data);
     actions
       .login(data, navigate)
       .then((success) => {

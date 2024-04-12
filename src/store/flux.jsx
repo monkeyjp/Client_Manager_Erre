@@ -192,7 +192,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // Function to sign up a new user
       signUp: (data, navigate, setErrors) => {
         // Perform API request to create a new user
-        console.log(data);
+
         const requestOptions = {
           method: "POST",
           headers: {
@@ -216,7 +216,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       // Function to log in a user
       login: (data, navigate) => {
-        console.log(data);
         return new Promise((resolve, reject) => {
           fetch("https://app.grupoerre.pt:1934/auth/login", {
             method: "POST",
@@ -281,7 +280,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const clients = getStore().clients;
         const client = clients.find((client) => client.id === parseInt(id));
         if (!client) {
-          console.log(`Cliente con ID ${id} no encontrado.`);
+          //console.log(`Cliente con ID ${id} no encontrado.`);
           return null;
         }
         return client;
