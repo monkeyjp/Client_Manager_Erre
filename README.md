@@ -1,8 +1,15 @@
-# React + Vite
+# Client Manager Erre
+## Description
+This project is a web application built with React.js and Material-UI that allows users to sign up for an account. It provides a user-friendly interface for entering registration information and handles form validation on the client side. Upon successful registration, users are redirected to the login page.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
+User-friendly sign-up form with validation for first name, last name, email, and password fields.
+Display of error messages for invalid input fields.
+Integration with backend API for user registration.
+Redirect to login page after successful registration.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+1. React.js
+2. Material-UI
+3. React Router
+4. Zod (for data validation)
